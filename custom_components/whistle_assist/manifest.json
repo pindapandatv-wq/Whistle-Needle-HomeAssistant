@@ -1,12 +1,12 @@
 {
   "domain": "whistle_assist",
   "name": "Whistle Assist",
-  "codeowners": [
-    "@pindapandatv-wq"
-  ],
   "categories": [
     "ai_voice.voice_assistants"
   ],
+  "codeowners": [
+    "@pindapandatv-wq"
+  ],  
   "config_flow": true,
   "dependencies": [
     "conversation",
