@@ -1,0 +1,36 @@
+Whistle Assist for Home Assistant — third-party notices
+
+This repository is an independent community integration. It is not endorsed
+by, sponsored by, or affiliated with Home Assistant or Cactus Compute, Inc.
+
+Cactus Needle / Whistle dependency
+---------------------------------
+Whistle Assist depends on cactus-needle==3.2.8, distributed by Cactus Compute,
+Inc. under the Apache License, Version 2.0. The dependency is installed by
+Home Assistant at setup time and is not vendored in this repository. Model
+weights are fetched/cached by the upstream library as needed; they are not
+included in this source archive. The package's Apache-2.0 license does not by
+itself establish the license terms of separately downloaded model weights or
+other external assets. Consult Cactus Compute's current upstream terms and
+model metadata before redistributing such assets. See:
+  https://github.com/cactus-compute/needle
+  https://pypi.org/project/cactus-needle/3.2.8/
+  https://www.apache.org/licenses/LICENSE-2.0
+
+Project inspiration and citation
+--------------------------------
+The integration is informed by the public Whistle/Needle documentation. Please
+refer to the upstream project for its code, model and research credits:
+  https://cactuscompute.com/blog/whistle
+  https://github.com/cactus-compute/needle
+
+Suggested citation for Needle 3 (from upstream documentation):
+
+@misc{needle3_2026,
+  title        = {Needle: Automation Foundation Model for Tiny Devices},
+  author       = {Ndubuaku, Henry and Mosoyan, Karen and Mroz, Jakub and Cylich, Noah and
+                  Kumar, Satyajit and Sandhu, Parkirat and Shemet, Roman and Lee, Justin H.},
+  year         = {2026},
+  organization = {Cactus Compute, Inc.},
+  howpublished = {\url{https://github.com/cactus-compute/needle}}
+}

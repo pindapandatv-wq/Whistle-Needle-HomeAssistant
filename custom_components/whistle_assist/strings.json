@@ -1,0 +1,28 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Whistle Assist",
+        "description": "Local speech recognition with Whistle and Home Assistant device actions with Needle.",
+        "data": {
+          "language": "Whistle language (used to override automatic language selection)",
+          "confidence_threshold": "Minimum Needle confidence to execute actions without confirmation (0–1)"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Whistle Assist is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Whistle Assist options",
+        "data": {
+          "language": "Whistle language (used to override automatic language selection)",
+          "confidence_threshold": "Minimum Needle confidence to execute actions without confirmation (0–1)"
+        }
+      }
+    }
+  }
+}
