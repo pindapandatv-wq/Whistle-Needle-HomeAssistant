@@ -1,9 +1,6 @@
 {
   "domain": "whistle_assist",
-  "name": "Whistle Assist",
-  "categories": [
-    "ai_voice.voice_assistants"
-  ],
+  "name": "Whistle Assist",  
   "codeowners": [
     "@pindapandatv-wq"
   ],  
