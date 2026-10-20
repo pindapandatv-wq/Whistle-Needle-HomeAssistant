@@ -2,6 +2,15 @@
 
 [![Hassfest](https://github.com/pindapandatv-wq/Whistle-Needle-HomeAssistant/actions/workflows/validate.yaml/badge.svg)](https://github.com/pindapandatv-wq/Whistle-Needle-HomeAssistant/actions/workflows/validate.yaml)
 
+
+## AI use disclosure
+Vibecoded in a few minutes, because it seems simple enough, but mashing two things I never built together is always a chore.
+And for chores, we have AI.
+
+I checked the code, looks good. If you trust the engine and the model, this should be ok.
+
+## Intro
+
 An experimental Home Assistant custom integration connecting Cactus Compute's local Whistle speech recognition and Needle tool-calling model to Home Assistant Assist.
 
 - **Whistle speech-to-text entity:** `Whistle`, selectable in an Assist pipeline.
