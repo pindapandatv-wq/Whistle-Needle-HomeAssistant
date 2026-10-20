@@ -4,6 +4,9 @@
   "codeowners": [
     "@pindapandatv-wq"
   ],
+  "categories": [
+    "ai_voice.voice_assistants"
+  ],
   "config_flow": true,
   "dependencies": [
     "conversation",
