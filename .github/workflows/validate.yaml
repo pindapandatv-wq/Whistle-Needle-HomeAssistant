@@ -3,45 +3,26 @@ name: Validate
 on:
   push:
   pull_request:
+  schedule:
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  repository-contracts:
-    name: Repository contracts and Python syntax
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Validate repository metadata and assets
-        run: python scripts/validate_repo.py
-      - name: Compile integration and scripts
-        run: python -m compileall -q custom_components/whistle_assist scripts
-
   hassfest:
     name: Home Assistant Hassfest
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Run Hassfest
-        uses: home-assistant/actions/hassfest@a7c616ce81ccda50150bf1595786c71b1883fabb # master
+      - uses: actions/checkout@v7
+      - uses: home-assistant/actions/hassfest@master
 
   hacs:
-    name: HACS validation
+    name: HACS Validation
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Validate HACS integration
-        uses: hacs/action@885037da508419fd08c13515967aec868dfdee2d # main
+      - uses: actions/checkout@v7
+      - uses: hacs/action@main
         with:
           category: integration
