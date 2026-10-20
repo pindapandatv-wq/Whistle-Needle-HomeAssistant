@@ -10,6 +10,7 @@ import json
 import logging
 import tempfile
 import time
+import wave
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -804,20 +805,52 @@ class WhistleAssistManager:
         return f"{friendly_action} {friendly_name}{suffix}."
 
 
-def _transcribe_file(audio: bytes, language: str | None) -> dict[str, Any]:
+def _ensure_wav(audio: bytes, sample_rate: int, channels: int, sample_width: int) -> bytes:
+    """Return a valid WAV file, wrapping raw PCM if needed."""
+    if audio[:4] == b"RIFF" and audio[8:12] == b"WAVE":
+        return audio  # already a complete WAV file
+    # Drop a trailing partial frame so the frame count is consistent
+    frame_size = channels * sample_width
+    usable = len(audio) - (len(audio) % frame_size)
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as wf:
+        wf.setnchannels(channels)
+        wf.setsampwidth(sample_width)
+        wf.setframerate(sample_rate)
+        wf.writeframes(audio[:usable])
+    return buf.getvalue()
+
+
+def _transcribe_file(
+    audio: bytes,
+    language: str | None,
+    sample_rate: int = 16000,
+    channels: int = 1,
+    sample_width: int = 2,
+) -> dict[str, Any]:
     """Run Whistle in a worker thread against a temporary WAV file."""
     import needle
 
+    wav_bytes = _ensure_wav(audio, sample_rate, channels, sample_width)
     with tempfile.NamedTemporaryFile(prefix="cactus_whistle_", suffix=".wav") as wav_file:
-        wav_file.write(audio)
+        wav_file.write(wav_bytes)
         wav_file.flush()
         if language:
             return needle.transcribe(wav_file.name, language=language)
         return needle.transcribe(wav_file.name)
 
 
-async def async_transcribe(hass: HomeAssistant, audio: bytes, language: str | None) -> str:
+async def async_transcribe(
+    hass: HomeAssistant,
+    audio: bytes,
+    language: str | None,
+    sample_rate: int = 16000,
+    channels: int = 1,
+    sample_width: int = 2,
+) -> str:
     """Transcribe bytes without blocking Home Assistant's event loop."""
-    result = await hass.async_add_executor_job(_transcribe_file, audio, language)
+    result = await hass.async_add_executor_job(
+        _transcribe_file, audio, language, sample_rate, channels, sample_width
+    )
     text = result.get("text", "") if isinstance(result, dict) else ""
     return str(text).strip()

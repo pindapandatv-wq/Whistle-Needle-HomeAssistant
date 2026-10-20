@@ -88,7 +88,15 @@ class WhistleSpeechToTextEntity(SpeechToTextEntity):
                 language = (metadata.language or "").lower().split("-", maxsplit=1)[0]
                 if language not in SUPPORTED_LANGUAGES:
                     language = ""
-            transcript = await async_transcribe(self.hass, bytes(audio), language or None)
+            transcript = await async_transcribe(
+                self.hass,
+                bytes(audio),
+                language or None,
+                sample_rate=int(metadata.sample_rate),
+                channels=int(metadata.channel),
+                sample_width=int(metadata.bit_rate) // 8,
+            )
+
             # Whistle intentionally returns an empty transcript for silence.
             return SpeechResult(
                 transcript or None,
