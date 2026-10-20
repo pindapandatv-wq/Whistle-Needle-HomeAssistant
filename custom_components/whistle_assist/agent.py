@@ -808,31 +808,31 @@ def _transcribe_file(audio: bytes, language: str | None) -> dict[str, Any]:
     import needle
 
     with tempfile.NamedTemporaryFile(suffix=".wav") as wav_file:
-    # Preserve audio that already has a valid WAV header.
-    if audio[:4] == b"RIFF" and audio[8:12] == b"WAVE":
-        wav_file.write(audio)
-    else:
-        # Home Assistant may supply raw PCM audio chunks.
-        # Wrap them in a proper WAV container for Whistle.
-        if len(audio) % 2:
-            raise ValueError(
-                "Invalid 16-bit PCM audio: odd number of bytes"
-            )
-
-        buffer = io.BytesIO()
-        with wave.open(buffer, "wb") as wav:
-            wav.setnchannels(1)
-            wav.setsampwidth(2)  # 16-bit PCM
-            wav.setframerate(16000)
-            wav.writeframes(audio)
-
-        wav_file.write(buffer.getvalue())
-
-    wav_file.flush()
-    return needle.transcribe(
-        wav_file.name,
-        language=language,
-    )
+        # Preserve audio that already has a valid WAV header.
+        if audio[:4] == b"RIFF" and audio[8:12] == b"WAVE":
+            wav_file.write(audio)
+        else:
+            # Home Assistant may supply raw PCM audio chunks.
+            # Wrap them in a proper WAV container for Whistle.
+            if len(audio) % 2:
+                raise ValueError(
+                    "Invalid 16-bit PCM audio: odd number of bytes"
+                )
+    
+            buffer = io.BytesIO()
+            with wave.open(buffer, "wb") as wav:
+                wav.setnchannels(1)
+                wav.setsampwidth(2)  # 16-bit PCM
+                wav.setframerate(16000)
+                wav.writeframes(audio)
+    
+            wav_file.write(buffer.getvalue())
+    
+        wav_file.flush()
+        return needle.transcribe(
+            wav_file.name,
+            language=language,
+        )
 
 
 async def async_transcribe(hass: HomeAssistant, audio: bytes, language: str | None) -> str:
